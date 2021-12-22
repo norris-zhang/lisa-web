@@ -1,0 +1,10 @@
+.error-message {
+  color: red;
+}
+
+@media only screen and (min-width: 768px) {
+  /* for desktops */
+  .submit-button {
+    width: 30%;
+  }
+}
