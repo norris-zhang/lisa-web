@@ -1,24 +1,39 @@
 import Container from '@mui/material/Container';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './App.css';
-import Login from './components/auth/Login';
-import Classes from './components/teacher/Classes';
+import { checkLogin } from './services/APIService';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-  const loginHandler = () => {
-    console.log('logged in.');
-    setLoggedIn(true);
-  };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loginToken = localStorage.getItem('_token');
+    console.log(loginToken);
+    if (loginToken) {
+      checkLogin(loginToken)
+      .then(response => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          throw new Error('response status is ' + response.status);
+        }
+      })
+      .then(text => {
+        navigate("/classes");
+      })
+      .catch(error => {
+        navigate("/login");
+      });
+    } else {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
     <Container maxWidth="sm">
-      { loggedIn ? (
-          <Classes />
-        ) : 
-        (
-          <Login onLogin={loginHandler} />
-        )
-      }
+      <Outlet />
     </Container>
   );
 }

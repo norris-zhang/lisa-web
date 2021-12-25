@@ -3,11 +3,24 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './components/auth/Login';
+import Classes from './components/teacher/Classes';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<App />}>
+        <Route path="login" element={<Login />} />
+        <Route path="classes" element={<Classes />} />
+        <Route path="*" element={
+          <main style={{ padding: "1rem" }}>
+            <p>404</p>
+          </main>
+        } />
+      </Route>
+    </Routes>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

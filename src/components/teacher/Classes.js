@@ -41,14 +41,18 @@ const Classes = props => {
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
         <List>
-          {classList.map(clas => <ListItem key={clas.id} disablePadding>
+          {classList.map(clas => 
+          <>
+          <ListItem key={clas.id} disablePadding>
             <ListItemButton>
               <ListItemIcon>
                 <SchoolIcon />
               </ListItemIcon>
               <ListItemText primary={clas.name} secondary={`${clas.duration} min`} />
             </ListItemButton>
-          </ListItem>)}
+          </ListItem>
+          <Divider />
+          </>)}
 
         </List>
       </nav>

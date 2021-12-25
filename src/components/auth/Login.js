@@ -1,17 +1,22 @@
-import { Button, Divider, FormControl, FormGroup, Input, InputLabel } from '@mui/material';
-import { useState } from 'react';
+import { Backdrop, Button, CircularProgress, Divider, FormControl, FormGroup, Input, InputLabel } from '@mui/material';
+import { Fragment, useState } from 'react';
 import styles from './Login.module.css';
+
+import { login as loginService } from '../../services/APIService';
+import { useNavigate } from 'react-router-dom';
 
 const Login = props => {
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const submitHandler = event => {
     event.preventDefault();
     console.log('login');
-    fetch('http://localhost:8088/api/login', {
-      method: 'post',
-      body: new FormData(event.target)
-    })
+    setLoading(true);
+    loginService(event.target)
     .then(response => {
+      setLoading(false);
       if (response.ok) {
         return response.text();
       } else {
@@ -19,18 +24,21 @@ const Login = props => {
       }
     })
     .then(text => {
-      console.log('token = ' + text);
-      props.onLogin();
+      localStorage.setItem('_token', text);
+      navigate("/classes");
     })
     .catch(error => {
-      console.log('error = ');
-      console.log(error);
       setError(true);
       event.target.password.value = '';
     });
   };
   return (
-    <div>
+    <Fragment>
+      <Backdrop
+        sx={{color: '#fff', zIndex: theme => theme.zIndex.drawer + 1}}
+        open={loading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <h1>Sign in</h1>
       <Divider />
       {error && <div className={styles['error-message']}>Invalid username or password</div>}
@@ -50,7 +58,7 @@ const Login = props => {
         </FormControl>
       </FormGroup>
       </form>
-    </div>
+    </Fragment>
   );
 };
 
