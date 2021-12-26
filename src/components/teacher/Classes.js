@@ -1,62 +1,61 @@
 import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import SchoolIcon from '@mui/icons-material/School';
+import { Fragment, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { listClasses } from "../../services/APIService";
+import styles from './Classes.module.css'
 
-const classList = [
-  {
-    id: 1,
-    name: '周六1.30 7岁',
-    description: 'There are 6 students in this class. This class starts at 1.30 on Saturdays. It is a one-hour session, but it usually runs over 1 and a half hours.',
-    dayOfWeek: 'SAT',
-    duration: 90
-  },
-  {
-    id: 2,
-    name: '周六11.30 9岁',
-    description: 'There are 6 students in this class. This class starts at 1.30 on Saturdays. It is a one-hour session, but it usually runs over 1 and a half hours.',
-    dayOfWeek: 'SAT',
-    duration: 90
-  },
-  {
-    id: 3,
-    name: '周一3.30 5岁',
-    description: 'There are 6 students in this class. This class starts at 1.30 on Saturdays. It is a one-hour session, but it usually runs over 1 and a half hours.',
-    dayOfWeek: 'MON',
-    duration: 90
-  },
-  {
-    id: 4,
-    name: '周二3.30 7岁',
-    description: 'There are 6 students in this class. This class starts at 1.30 on Saturdays. It is a one-hour session, but it usually runs over 1 and a half hours.',
-    dayOfWeek: 'TUE',
-    duration: 90
-  }
-];
 
 const Classes = props => {
-  // fetch('');
+  const [classes, setClasses] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    listClasses()
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('response status is ' + response.status)
+      }
+    })
+    .then(json => {
+      setClasses(json);
+    })
+    .catch(error => {
+      setErrorMessage(error.message);
+    });
+  }, []);
+
+  const viewClassStudents = classId => {
+    navigate('/class/' + classId);
+  };
   return (
     <div>
       <h1>Classes</h1>
       <Divider />
+      <div className={styles['error-message']}>{errorMessage}</div>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      <nav aria-label="main mailbox folders">
-        <List>
-          {classList.map(clas => 
-          <>
-          <ListItem key={clas.id} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                <SchoolIcon />
-              </ListItemIcon>
-              <ListItemText primary={clas.name} secondary={`${clas.duration} min`} />
-            </ListItemButton>
-          </ListItem>
-          <Divider />
-          </>)}
+        <nav aria-label="main mailbox folders">
+          <List>
+            {classes.map(clas => 
+            <Fragment key={clas.id}>
+            <ListItem disablePadding onClick={() => {viewClassStudents(clas.id);}}>
+              <ListItemButton>
+                <ListItemIcon>
+                  <SchoolIcon />
+                </ListItemIcon>
+                <ListItemText primary={clas.name} secondary={`${clas.duration} min`} />
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            </Fragment>)}
 
-        </List>
-      </nav>
-    </Box>
+          </List>
+        </nav>
+      </Box>
     </div>
   );
 };

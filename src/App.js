@@ -1,12 +1,13 @@
 import Container from '@mui/material/Container';
-import { useEffect } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import { checkLogin } from './services/APIService';
 
 function App() {
 
-  const navigate = useNavigate();
+  const navRef = useRef(useNavigate());
+  const locRef = useRef(useLocation());
 
   useEffect(() => {
     const loginToken = localStorage.getItem('_token');
@@ -21,15 +22,20 @@ function App() {
         }
       })
       .then(text => {
-        navigate("/classes");
+        // navRef.current('/classes');
+        if (locRef.current.pathname === '/') {
+          navRef.current('/classes');
+        } else {
+          navRef.current(locRef.current.pathname);
+        }
       })
       .catch(error => {
-        navigate("/login");
+        navRef.current("/login");
       });
     } else {
-      navigate("/login");
+      navRef.current("/login");
     }
-  }, [navigate]);
+  }, []);
 
   return (
     <Container maxWidth="sm">
