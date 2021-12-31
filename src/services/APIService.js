@@ -3,9 +3,14 @@ const authHeader = token => {
 };
 
 export const login = form => {
+  const formData = new FormData(form);
+  const bodyObj = {};
+  formData.forEach((value, key) => {
+    bodyObj[key] = value;
+  });
   return fetch(process.env.REACT_APP_API_SERVER_ROOT + '/login', {
-      method: 'post',
-      body: new FormData(form)
+      method: 'POST',
+      body: JSON.stringify(bodyObj)
   });
 };
 

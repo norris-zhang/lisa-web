@@ -18,13 +18,15 @@ const Login = props => {
     .then(response => {
       setLoading(false);
       if (response.ok) {
-        return response.text();
+        return response.json();
       } else {
         throw new Error('response status is ' + response.status);
       }
     })
-    .then(text => {
-      localStorage.setItem('_token', text);
+    .then(json => {
+      console.log("json:");
+      console.log(json);
+      localStorage.setItem('_token', json.sessionId);
       navigate("/classes");
     })
     .catch(error => {
