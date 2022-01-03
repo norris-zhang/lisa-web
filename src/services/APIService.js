@@ -14,12 +14,25 @@ export const login = form => {
   });
 };
 
-export const checkLogin = token => {
-  return fetch(process.env.REACT_APP_API_SERVER_ROOT + '/checkLogin', {
+export const checkLogin = (token, jsonHandler, errorHandler) => {
+  fetch(process.env.REACT_APP_API_SERVER_ROOT + '/checkLogin', {
     method: 'get',
     headers: {
-      'Authorization': 'Bearer ' + token
+      'sessionid': token
     }
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('response status is ' + response.status);
+    }
+  })
+  .then(json => {
+    jsonHandler(json);
+  })
+  .catch(error => {
+    errorHandler(error);
   });
 };
 

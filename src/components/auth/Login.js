@@ -12,7 +12,6 @@ const Login = props => {
 
   const submitHandler = event => {
     event.preventDefault();
-    console.log('login');
     setLoading(true);
     loginService(event.target)
     .then(response => {
@@ -27,6 +26,7 @@ const Login = props => {
       console.log("json:");
       console.log(json);
       localStorage.setItem('_token', json.sessionId);
+      localStorage.setItem('lastLogin', new Date().getTime().toString());
       navigate("/classes");
     })
     .catch(error => {
