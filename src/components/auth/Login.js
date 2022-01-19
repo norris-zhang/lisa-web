@@ -25,7 +25,7 @@ const Login = props => {
     .then(json => {
       console.log("json:");
       console.log(json);
-      localStorage.setItem('_token', json.sessionId);
+      localStorage.setItem('_token', json.token);
       localStorage.setItem('lastLogin', new Date().getTime().toString());
       navigate("/classes");
     })

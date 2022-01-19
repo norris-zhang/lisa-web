@@ -1,24 +1,28 @@
+const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+
 const authHeader = token => {
   return {'Authorization': 'Bearer ' + token};
 };
 
 export const login = form => {
   const formData = new FormData(form);
-  const bodyObj = {};
-  formData.forEach((value, key) => {
-    bodyObj[key] = value;
-  });
+  // const bodyObj = {};
+  // formData.forEach((value, key) => {
+  //   bodyObj[key] = value;
+  // });
   return fetch(process.env.REACT_APP_API_SERVER_ROOT + '/login', {
       method: 'POST',
-      body: JSON.stringify(bodyObj)
+      // body: JSON.stringify(bodyObj)
+      body: formData
   });
 };
 
-export const checkLogin = (token, jsonHandler, errorHandler) => {
+export const checkLogin = (jsonHandler, errorHandler) => {
+  const token = localStorage.getItem('_token');
   fetch(process.env.REACT_APP_API_SERVER_ROOT + '/checkLogin', {
     method: 'get',
     headers: {
-      'sessionid': token
+      ...authHeader(token)
     }
   })
   .then(response => {
@@ -49,4 +53,25 @@ export const listClasses = () => {
       ...authHeader(token)
     }
   });
+};
+
+export const hasTokenWithinPeriod = () => {
+  const loginToken = localStorage.getItem('_token');
+  const lastLogin = localStorage.getItem('lastLogin');
+  if (!loginToken) {
+    return false;
+  }
+  if (!lastLogin) {
+    return false;
+  }
+  let milli = parseInt(lastLogin);
+  if (isNaN(milli)) {
+    return false;
+  }
+  let now = new Date();
+  let lastLoginDate = new Date(milli);
+  if (now - lastLoginDate > THIRTY_DAYS) {
+    return false;
+  }
+  return true;
 };
