@@ -4,8 +4,9 @@ import SchoolIcon from '@mui/icons-material/School';
 import { Fragment } from "react";
 
 const Students = props => {
-  let params = useParams();
-  console.log('listing class ' + params.classId);
+  let { classId } = useParams();
+  console.log('classId = ' + classId);
+
   const studentList = [
     {
       id: 1,

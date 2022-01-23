@@ -27,13 +27,10 @@ export const checkLogin = (jsonHandler, errorHandler) => {
   })
   .then(response => {
     if (response.ok) {
-      return response.json();
+      jsonHandler({});
     } else {
       throw new Error('response status is ' + response.status);
     }
-  })
-  .then(json => {
-    jsonHandler(json);
   })
   .catch(error => {
     errorHandler(error);

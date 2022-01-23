@@ -1,5 +1,6 @@
 import Container from '@mui/material/Container';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './App.css';
 import { checkLogin, hasTokenWithinPeriod } from './services/APIService';
@@ -7,25 +8,28 @@ import { checkLogin, hasTokenWithinPeriod } from './services/APIService';
 
 function App() {
 
-  const navRef = useRef(useNavigate());
-  const locRef = useRef(useLocation());
+  const hasCheckedLogin = useRef(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (hasTokenWithinPeriod()) {
-      checkLogin(json => {
-        // navRef.current('/classes');
-        if (locRef.current.pathname === '/') {
-          navRef.current('/classes');
-        } else {
-          navRef.current(locRef.current.pathname);
-        }
-      }, error => {
-        navRef.current("/login");
-      });
-    } else {
-      navRef.current("/login");
+    if (!hasCheckedLogin.current) {
+      if (hasTokenWithinPeriod()) {
+        checkLogin(json => {
+          if (location.pathname === '' || location.pathname === '/') {
+            navigate('/classes');
+          } else {
+            navigate(location.pathname);
+          }
+        }, error => {
+          navigate('/login');
+        });
+      } else {
+        navigate('/login');
+      }
+      hasCheckedLogin.current = true;
     }
-  }, []);
+  }, [navigate, location]);
 
   return (
     <Container maxWidth="sm">
