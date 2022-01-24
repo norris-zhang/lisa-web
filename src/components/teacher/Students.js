@@ -1,18 +1,30 @@
 import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { useParams } from "react-router-dom";
 import SchoolIcon from '@mui/icons-material/School';
-import { Fragment } from "react";
+import { Fragment, useRef } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
+import { listStudents } from "../../services/APIService";
 
 const Students = props => {
   let { classId } = useParams();
+  const previousClassId = useRef(classId);
   console.log('classId = ' + classId);
 
-  const studentList = [
-    {
-      id: 1,
-      name: 'Norris Zhang'
+  const [studentList, setStudentList] = useState([]);
+
+  useEffect(() => {
+    if (previousClassId.current !== classId) {
+
+      listStudents(classId, json => {
+        setStudentList(prev => {
+          return [...prev, ...json.students];
+        });
+      }, error => {});
+
     }
-  ];
+  }, [classId]);
+
   return (
     <div>
       <h1>Students</h1>

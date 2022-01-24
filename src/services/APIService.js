@@ -52,6 +52,31 @@ export const listClasses = () => {
   });
 };
 
+export const listStudents = (classId, jsonHandler, errorHandler) => {
+  const token = localStorage.getItem('_token');
+  if (!token) {
+    errorHandler('No token found');
+    // return new Promise((resolve, reject) => {
+    //   reject('No token found.');
+    // });
+  }
+  fetch(process.env.REACT_APP_API_SERVER_ROOT + '/students/' + classId, {
+    method: 'get',
+    headers: {
+      ...authHeader(token)
+    }
+  })
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error('response status is ' + response.status);
+    }
+  })
+  .then(jsonHandler)
+  .catch(errorHandler);
+};
+
 export const hasTokenWithinPeriod = () => {
   const loginToken = localStorage.getItem('_token');
   const lastLogin = localStorage.getItem('lastLogin');
