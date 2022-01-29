@@ -28,6 +28,7 @@ const Login = props => {
       navigate("/classes");
     })
     .catch(error => {
+      setLoading(false);
       setError(true);
       event.target.password.value = '';
     });

@@ -13,6 +13,7 @@ const Classes = props => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    let isMounted = true;
     listClasses()
     .then(response => {
       if (response.ok) {
@@ -22,11 +23,14 @@ const Classes = props => {
       }
     })
     .then(json => {
-      setClasses(json);
+      if (isMounted) {
+        setClasses(json.classes);
+      }
     })
     .catch(error => {
       setErrorMessage(error.message);
     });
+    return () => {isMounted = false;};
   }, []);
 
   const viewClassStudents = classId => {

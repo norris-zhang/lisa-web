@@ -66,7 +66,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
 ```
-aws s3 cp C:\Users\nzhang\Documents\personal\java_study\lisa\source\web\lisa-web\build\ s3://lisa.norris.com/ --recursive
+aws s3 cp ~/Documents/personal/projects/lisa/source/lisa-web/build/ s3://lisa.norris.com/ --recursive
 ```
 
 ### `npm run build` fails to minify

@@ -21,9 +21,7 @@ export const checkLogin = (jsonHandler, errorHandler) => {
   const token = localStorage.getItem('_token');
   fetch(process.env.REACT_APP_API_SERVER_ROOT + '/checkLogin', {
     method: 'get',
-    headers: {
-      ...authHeader(token)
-    }
+    headers: authHeader(token)
   })
   .then(response => {
     if (response.ok) {
