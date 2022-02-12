@@ -1,28 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Login from './components/auth/Login';
-import Classes from './components/teacher/Classes';
-import Students from './components/teacher/Students';
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route path="login" element={<Login />} />
-        <Route path="classes" element={<Classes />} />
-        <Route path="class/:classId" element={<Students />} />
-        <Route path="*" element={
-          <main style={{ padding: "1rem" }}>
-            <p>404</p>
-          </main>
-        } />
-      </Route>
-    </Routes>
-  </BrowserRouter>,
+  <React.StrictMode>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 

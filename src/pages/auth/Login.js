@@ -1,38 +1,11 @@
+import { Fragment } from 'react';
 import { Backdrop, Button, CircularProgress, Divider, FormControl, FormGroup, Input, InputLabel } from '@mui/material';
-import { Fragment, useState } from 'react';
 import styles from './Login.module.css';
 
-import { login as loginService } from '../../services/APIService';
-import { useNavigate } from 'react-router-dom';
 
 const Login = props => {
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  let loading = false;
 
-  const submitHandler = event => {
-    event.preventDefault();
-    setLoading(true);
-    loginService(event.target)
-    .then(response => {
-      setLoading(false);
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('response status is ' + response.status);
-      }
-    })
-    .then(json => {
-      localStorage.setItem('_token', json.token);
-      localStorage.setItem('lastLogin', new Date().getTime().toString());
-      navigate("/classes");
-    })
-    .catch(error => {
-      setLoading(false);
-      setError(true);
-      event.target.password.value = '';
-    });
-  };
   return (
     <Fragment>
       <Backdrop
@@ -42,8 +15,8 @@ const Login = props => {
       </Backdrop>
       <h1>Sign in</h1>
       <Divider />
-      {error && <div className={styles['error-message']}>Invalid username or password</div>}
-      <form onSubmit={submitHandler}>
+      <div className={styles['error-message']}>Invalid username or password</div>
+      <form onSubmit={() => {}}>
       <FormGroup>
         <FormControl margin="normal">
           <InputLabel htmlFor="username">Username or Email Address *</InputLabel>

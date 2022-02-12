@@ -1,52 +1,22 @@
-import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import SchoolIcon from '@mui/icons-material/School';
-import { Fragment, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { listClasses } from "../../services/APIService";
-import styles from './Classes.module.css'
+import { Box, Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { Fragment } from "react";
+import styles from './Classes.module.css';
 
 
 const Classes = props => {
-  const [classes, setClasses] = useState([]);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    let isMounted = true;
-    listClasses()
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('response status is ' + response.status)
-      }
-    })
-    .then(json => {
-      if (isMounted) {
-        setClasses(json.classes);
-      }
-    })
-    .catch(error => {
-      setErrorMessage(error.message);
-    });
-    return () => {isMounted = false;};
-  }, []);
-
-  const viewClassStudents = classId => {
-    navigate('/class/' + classId);
-  };
+  
   return (
     <div>
       <h1>Classes</h1>
       <Divider />
-      <div className={styles['error-message']}>{errorMessage}</div>
+      <div className={styles['error-message']}>errorMessage</div>
       <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
         <nav aria-label="main mailbox folders">
           <List>
-            {classes.map(clas => 
+            {[].map(clas => 
             <Fragment key={clas.id}>
-            <ListItem disablePadding onClick={() => {viewClassStudents(clas.id);}}>
+            <ListItem disablePadding onClick={() => {}}>
               <ListItemButton>
                 <ListItemIcon>
                   <SchoolIcon />

@@ -25,14 +25,13 @@ export const checkLogin = (jsonHandler, errorHandler) => {
   })
   .then(response => {
     if (response.ok) {
-      jsonHandler({});
+      return response.json();
     } else {
       throw new Error('response status is ' + response.status);
     }
   })
-  .catch(error => {
-    errorHandler(error);
-  });
+  .then(jsonHandler)
+  .catch(errorHandler);
 };
 
 export const listClasses = () => {
