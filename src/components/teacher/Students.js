@@ -13,17 +13,17 @@ const Students = props => {
 
   const [studentList, setStudentList] = useState([]);
 
-  useEffect(() => {
-    if (previousClassId.current !== classId) {
+  // useEffect(() => {
+  //   if (previousClassId.current !== classId) {
 
-      listStudents(classId, json => {
-        setStudentList(prev => {
-          return [...prev, ...json.students];
-        });
-      }, error => {});
+  //     listStudents(classId, json => {
+  //       setStudentList(prev => {
+  //         return [...prev, ...json.students];
+  //       });
+  //     }, error => {});
 
-    }
-  }, [classId]);
+  //   }
+  // }, [classId]);
 
   return (
     <div>

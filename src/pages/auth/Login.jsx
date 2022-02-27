@@ -1,10 +1,39 @@
-import { Fragment } from 'react';
+import { Fragment, useContext, useState } from 'react';
 import { Backdrop, Button, CircularProgress, Divider, FormControl, FormGroup, Input, InputLabel } from '@mui/material';
 import styles from './Login.module.css';
+import axios from 'axios';
+import { useRef } from 'react';
+import LoginContext from './LoginContext';
 
 
 const Login = props => {
-  let loading = false;
+  // let loading = false;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const pwdRef = useRef(null);
+  const { setUserInfo } = useContext(LoginContext);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    // login
+    axios.post(process.env.REACT_APP_API_SERVER_ROOT + '/login', new FormData(e.target))
+    .then(response => {
+      setUserInfo(response.data);
+    })
+    .catch(error => {
+      
+      if (error.response) {
+        setError(error.response.data.errorMessages.join('<br />'));
+      } else {
+        setError('Something went wrong. Try again later.');
+      }
+    })
+    .then(() => {
+      setLoading(false);
+    });
+  };
 
   return (
     <Fragment>
@@ -15,8 +44,8 @@ const Login = props => {
       </Backdrop>
       <h1>Sign in</h1>
       <Divider />
-      <div className={styles['error-message']}>Invalid username or password</div>
-      <form onSubmit={() => {}}>
+      <div className={styles['error-message']}>{ error }</div>
+      <form onSubmit={handleLogin}>
       <FormGroup>
         <FormControl margin="normal">
           <InputLabel htmlFor="username">Username or Email Address *</InputLabel>
@@ -25,7 +54,7 @@ const Login = props => {
         </FormControl>
         <FormControl margin="normal">
           <InputLabel htmlFor="password">Password*</InputLabel>
-          <Input id="password" type="password" name="password"/>
+          <Input id="password" type="password" name="password" inputRef={pwdRef} />
         </FormControl>
         <FormControl margin="normal">
           <Button variant="contained" type="submit" className={styles['submit-button']}>Sign In</Button>

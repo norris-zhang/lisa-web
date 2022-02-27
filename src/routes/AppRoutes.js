@@ -1,23 +1,24 @@
-import Login from "../pages/auth/Login";
-import Classes from "../components/teacher/Classes";
-import Students from "../components/teacher/Students";
 import NoMatch from "../pages/NoMatch";
+import LoginWrapper from "../pages/auth/LoginWrapper";
+import ClassesPage from "../pages/classes/ClassesPage";
 
 const AppRoutes = () => {
     let routes = [
         {
-            path: '/', element: <Login />,
-            children: [
-                {
-                    path: 'classes', element: <Classes />,
-                    children: [
-                        // { index: true, element: <ClassesIndex /> },
-                        { path: ':id', element: <Students /> }
-                    ]
-                },
-                { path: '*', element: <NoMatch /> }
-            ]
-        }
+            path: '/', element: <LoginWrapper />
+            // children: [
+            //     {
+            //         path: 'classes', element: <ClassesPage />,
+            //         children: [
+            //             // { index: true, element: <ClassesIndex /> },
+            //             { path: ':id', element: <Students /> }
+            //         ]
+            //     },
+            //     { path: '*', element: <NoMatch /> }
+            // ]
+        },
+        { path: '/classes', element: <ClassesPage /> },
+        { path: '*', element: <NoMatch /> }
     ];
 
     return routes;
