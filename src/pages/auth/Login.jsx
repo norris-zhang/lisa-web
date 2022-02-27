@@ -20,18 +20,16 @@ const Login = props => {
     // login
     axios.post(process.env.REACT_APP_API_SERVER_ROOT + '/login', new FormData(e.target))
     .then(response => {
+      setLoading(false);
       setUserInfo(response.data);
     })
     .catch(error => {
-      
+      setLoading(false);
       if (error.response) {
         setError(error.response.data.errorMessages.join('<br />'));
       } else {
         setError('Something went wrong. Try again later.');
       }
-    })
-    .then(() => {
-      setLoading(false);
     });
   };
 

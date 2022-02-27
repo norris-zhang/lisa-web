@@ -1,14 +1,17 @@
+import React from "react";
 import { useContext } from "react";
-import { Navigate } from "react-router-dom";
 import Login from "./Login";
 import LoginContext from "./LoginContext";
+import Layout from "../../layouts/Layout";
 
 const LoginWrapper = () => {
   const { userInfo } = useContext(LoginContext);
   
   return (
     <div>{ userInfo
-      ? (<Navigate to="/classes" replace={true} />)
+      ? (
+        <Layout></Layout>
+      )
       : (<Login />) }
     </div>
   );

@@ -9,11 +9,11 @@ function App() {
   const [userInfo, setUserInfo] = useState(null);
   const loginContextValue = { userInfo, setUserInfo };
 
-  const routes = useRoutes(AppRoutes());
+  const routes = useRoutes(AppRoutes);
 
   return (
     <LoginContext.Provider value={ loginContextValue }>
-      <Container maxWidth="sm">
+      <Container maxWidth="xl">
         { routes }
       </Container>
     </LoginContext.Provider>
